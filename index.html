@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Vuejs</title>
+</head>
+<body>
+    <div id="app">
+        <form action="" @submit.prevent="guardarTarea">
+            <input type="text" v-model="nuevaTarea" @keyup.enter="guardarTarea">
+            <input type="submit" value="Guardar">
+        </form>
+        <input type="range" v-model="tiempo">{{ tiempo }}
+        <br>
+        <br>
+        <input type="text" v-model="busqueda">
+        <hr>
+        <p v-for="(valor, propiedad) in usuario">{{ valor }} : {{ propiedad }}</p>
+        <hr>
+        <h2>Lista de Tareas</h2>
+        <ul>
+            <li v-for="tarea in fiterTareas">
+                <span v-text="tarea.nombre"></span>
+                <span> - </span>
+                <span v-text="tarea.tiempo"></span>
+            </li>
+        </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                nuevaTarea: '',
+                tiempo: 0,
+                busqueda: '',
+                usuario: {
+                    username: 'Miguel Angel Cornielly',
+                    role: 'admin'
+                },
+                tareas: [
+                    {nombre: 'Aprender JavaScript moderno', tiempo: 3},
+                    {nombre: 'Aprender Laravel PHP', tiempo: 4},
+                    {nombre: 'Aprender CSS3 and HTML5', tiempo: 22},
+                    {nombre: 'Aprender Node Js', tiempo: 30},
+                    {nombre: 'Aprender Git', tiempo: 20},
+                    {nombre: 'Aprender Bootstrap 5', tiempo: 25},
+                ]
+            },
+            methods: {
+                guardarTarea() {
+                    this.tareas.unshift({
+                        nombre: this.nuevaTarea,
+                        tiempo: Math.floor(Math.random() * 100),
+                    });
+                    this.nuevaTarea = null;
+                }
+            },
+            computed: {
+                fiterTareas() {
+                    return this.tareas.filter(tarea =>{
+                        return tarea.tiempo <= this.tiempo && tarea.nombre.includes(this.busqueda);
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>

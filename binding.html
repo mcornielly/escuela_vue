@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Learning Vuejs</title>
+</head>
+<body>
+    <div id="app" class="container pt-2">
+        <label for="">Log-in/out</label>
+        <input type="checkbox" name="" id="" v-model="logged">
+        <hr>
+        <div class="alert col-md-12" :class="alert" role="alert">
+            {{ message }}
+          </div>
+        <pre>{{ $data }}</pre>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                logged: true,
+                messages: {
+                    in: "Logeado como @mcornielly",
+                    out: "Te has desconectado...!",
+                }
+            },
+            computed: {
+                message () {
+                    return this.logged ? this.messages.in : this.messages.out;
+                },
+                alert () {
+                    // return {
+                    //     'alert-info': this.logged, 
+                    //     'alert-danger': !this.logged
+                    // }
+
+                    // return this.logged ? 'alert-info' : 'alert-danger';
+
+                    return `alert-${this.logged ? 'info' : 'danger'}`;
+                } 
+            }
+
+        });
+    </script>
+</body>
+</html>
