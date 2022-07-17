@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    />
+    <title>Learning Vuejs</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+        <!-- <main>
+            <div class="row">
+                <div>
+                    <h1 class="col-md-10 text-center">Bienvenidos a mi Web</h1>
+                    <h2 class="col-md-10 text-center">pausa y disfruta</h2>
+                </div>
+                <article>
+                    <h3>Titulo del articulo</h3>
+                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quis ad optio, id velit nihil praesentium.
+                        Quibusdam voluptatem distinctio, blanditiis impedit nobis eveniet dolorum quidem ipsum culpa reiciendis
+                        non perspiciatis numquam!
+                    </p>
+                    <ul>
+                        <li><a href="#">Enlace 1</a></li>           
+                        <li><a href="#">Enlace 2</a></li>           
+                        <li><a href="#">Enlace 3</a></li>           
+                    </ul>
+                </article>
+            </div>
+            <footer>
+                <div class="col-md-12">
+                    <h5 class="text-center">Copyright | 2022</h5>
+                </div>
+            </footer>
+        </main> -->
+
+        <base-template>
+            <template #header :datos="datos">
+                <h1 class="col-md-12 text-center">{{ datos.titulo }}</h1>
+                <h5 class="col-md-12 mt-2 text-center">Site Nuevo</h5>
+            </template>
+            <template #content>
+                <h2>Title Contenido</h2>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sit nulla consectetur 
+                    quidem dolorem incidunt! Dolorum, iure. Rem facere esse porro architecto maxime,
+                    nobis tenetur laudantium aliquid recusandae quisquam, deleniti vitae!
+                </p>
+            </template>
+            <template #links>
+                <ul class="list-group">
+                    <li class="list-group-item"><a href="#">Ietem 1</a></li>
+                    <li class="list-group-item"><a href="#">Ietem 1</a></li>
+                    <li class="list-group-item"><a href="#">Ietem 1</a></li>
+                </ul>
+            </template>
+            <template #footer>
+                <h5 class="mt-5 text-center">Copyright | 2022</h5>
+            </template>
+        </base-template>
+        </div>
+        <pre>{{ $data }}</pre>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+    <script type="text/x-template" id="base-content-template">
+        <main class="border p-5 mt-5">
+            <header>
+                <slot name="header" :datos="datos"></slot>
+            </header>
+            <article>
+                <slot name="content"></slot>
+            </article>
+            <aside>
+                <slot name="links"></slot>
+            </aside>
+            <footer>
+                <slot name="footer"></slot>
+            </footer>
+        </main>
+    </script>
+
+    <script>
+        Vue.component('base-template', {
+            props : ['datos'],
+            template: '#base-content-template'
+        });
+
+        new Vue({
+            el: "#app",
+            data: {
+                datos: {
+                    titulo: "Este es un titulo desde el modelo",
+                }
+            }
+        });
+    </script>
+</body>
+</html>

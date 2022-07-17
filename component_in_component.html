@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    />
+    <title>Learning Vuejs</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3>Usuarios Disponibles : {{ userAvible.length }}</h3>
+                    <!-- <user v-for="user in userAvible" :info="user"></user> -->
+                    <users :list="userAvible" move-to="userSelected"></users>
+                </div> 
+                <div class="col-md-4">
+                    <h3>Usuarios Seleccionados : {{ userSelected.length }}</h3>
+                    <users :list="userSelected" move-to="userAvible"></users>
+                </div>   
+            </div>
+        </div>
+        <pre>{{ $data }}</pre>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+    <script type="text/x-template" id="user-template">
+        <div class="card mb-3" @click="modifiedList">
+            <img :src="info.picture.large" :alt="info.name" class="card-img-top">
+            <div class="card-body">
+                <h5 class="card-title"><strong>
+                    {{ nameFull }}
+                </strong>
+                </h5>
+                <a :href="info.email">{{ info.email }}</a>
+                <p class="card-text">{{ info.username }}</p>
+            </div>
+        </div>
+    </script>
+    <script type="text/x-template" id="users-template">
+        <div>
+            <user 
+                @selection="addUserSelect"
+                v-for="(user, index) in list" 
+                :info="user" 
+                :key="index">
+            </user>
+        </div>
+    </script>
+    <script>
+        const user = {
+            props: ["info"],
+            template: "#user-template",
+            computed: {
+                nameFull() {
+                    return `${this.info.name.title} : ${this.info.name.first} ${this.info.name.last}`;
+                }
+            },
+            methods: {
+                modifiedList() {
+                    this.$emit('selection', this.info.username);
+                }
+            }
+        };
+
+        // Wraper User select
+        const users = {
+            props: ['list','moveTo'],
+            template: '#users-template',
+            methods: {
+                addUserSelect(username) {
+                    // console.log(username);
+                    let index = this.list.findIndex(element => {
+                        return element.username === username;
+                    });
+                    if (index > -1) {
+                        // console.log(index);
+                        // let element = this.list.splice(index, 1)[0];
+                        console.log(this.$root[this.moveTo]);
+                        this.$root[this.moveTo].unshift(this.list.splice(index, 1)[0]);
+
+                    }
+                }
+            },
+            components: {
+                user
+            }
+        };
+
+        new Vue({
+            el: "#app",
+            created() {
+                fetch(this.url)
+                .then(response => response.json())
+                .then(response => this.userAvible = response.results.map(user => {
+                    return {
+                        username: user.login.username,
+                        name: user.name,
+                        email: user.email,
+                        picture: user.picture
+                    }
+                }));
+            },
+            components: {
+                users,
+            },
+            data: {
+                user: '',
+                url: 'https://randomuser.me/api/?results=50',
+                userAvible: [],
+                userSelected: []
+            }
+        });
+    </script>
+</body>
+</html>

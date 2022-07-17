@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous"
+    />
+    <title>Learning Vuejs</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="col-md-10">
+                <pre>{{ $data }}</pre>
+            </div>
+            <div class="col-md-3 mt-2">
+                <pizza
+                    v-for="pizza in pizzas"
+                    :name="pizza.name"
+                    :description="pizza.description"
+                    :image="pizza.image"
+                    :quantity="totalPizza"
+                    v-on:add="totalPizza++"
+                    v-on:subtract="totalPizza--"
+                >
+                </pizza>
+            </div>
+        </div>
+        <!-- <article v-for="(pizza,$index)in pizzas"class="pizza">
+            <h2 class="pizza__nombre">{{pizza.nombre}}</h2>
+            <section class="pizza__cantidad">
+                <button@click="masPizza($index)">+</button>
+                {{pizza.cantidad}}
+                <button@click="menosPizza($index)">-</button>
+            </section>
+            <img src="pizza.imagen"alt="Pizza"class="pizza ___ imagen">
+        </article> -->
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+    <script type="text/x-template" id="pizza-template">
+        <div class="card mb-3">
+            <img :src="image" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title"><strong>
+                    {{ name }}
+                </strong>
+                </h5>
+                <p class="card-text">{{ description }}</p>
+            </div>
+            <div class="col-md-10 mb-2">
+                <button class="btn btn-primary m-2" @click="addPizza">+</button>
+                {{ quantity }}
+                <button class="btn btn-primary m-2" @click="subtractPizza">-</button>
+            </div>
+        </div>
+    </script>
+    <script>
+        const pizza = {
+            props: [ "name", "description", "image", "quantity" ],
+            template: "#pizza-template",
+            methods: {
+                addPizza() {
+                    // this.quantity++;
+                    this.$emit('add');
+                },
+                subtractPizza() {
+                    // this.quantity > 0 &&  this.quantity--;
+                    if (this.quantity > 0) {
+                        this.$emit('subtract');
+                    }
+                }
+            }
+        };
+        new Vue({
+            el: "#app",
+            components: {
+                pizza,
+            },
+            data: {
+                totalPizza: 0,
+                pizzas: [
+                    {
+                        name: "Pizza Jamón y Queso",
+                        description: "Cras feugiat mattis ullamcorper. Fusce arcu sem, congue eget felis id, tincidunt fermentum nisi.",
+                        image: "https://tucentralonline.com/wp-content/uploads/2022/02/pizza-de-jamon-queso-y-tocino.jpg",
+                    },
+                    {
+                        name: "Pizza de Pepperonni",
+                        description: "Praesent quis justo pretium, posuere eros id, luctus ante. Phasellus eu nibh risus. Ut sit amet mattis lorem, vel facilisis risus.",
+                        image: "https://sfo2.digitaloceanspaces.com/estaticos/var/www/html/wp-content/uploads/2021/04/pizza.jpg",
+                    },
+                    {
+                        name: "Pizza la Casera",
+                        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam tempor tortor sit amet quam semper vulputate.",
+                        image: "https://cocina-casera.com/wp-content/uploads/2011/10/masa-pizza-casera.jpg",
+                    },
+                ]
+            }
+        });
+    </script>
+</body>
+</html>
